@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>ZDT X42S C# 上位机库使用手册</title>
+<style>
+@page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", "SimSun", sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.65;
+    color: #1b1b1b;
+    margin: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+pre, table, th, td, .note, .warn, .ok, .toc, .title-page, .tip {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+h1 {
+    font-size: 19pt;
+    color: #123a6b;
+    border-bottom: 2px solid #2f6db3;
+    padding-bottom: 5px;
+    margin: 20pt 0 10pt 0;
+    page-break-after: avoid;
+}
+h2 {
+    font-size: 13.5pt;
+    color: #1f4e79;
+    margin: 16pt 0 7pt 0;
+    page-break-after: avoid;
+}
+h3 {
+    font-size: 11.5pt;
+    color: #2e5f8a;
+    margin: 12pt 0 5pt 0;
+    page-break-after: avoid;
+}
+p { margin: 5pt 0; text-align: justify; }
+ul, ol { margin: 4pt 0 8pt 18pt; padding: 0; }
+li { margin: 3pt 0; }
+code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9.3pt;
+    background: #eef3f8;
+    padding: 0 3px;
+    color: #1f3f5f;
+}
+pre {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 8.6pt;
+    line-height: 1.45;
+    background: #f5f7fa;
+    border: 1px solid #d5e0ea;
+    border-left: 4px solid #2f6db3;
+    padding: 7px 9px;
+    margin: 7pt 0;
+    white-space: pre-wrap;
+    page-break-inside: avoid;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 9.2pt;
+    margin: 7pt 0 10pt 0;
+    page-break-inside: avoid;
+}
+th {
+    background: #e8f0f8;
+    color: #123a6b;
+    border: 1px solid #b8cce0;
+    padding: 5px 6px;
+    text-align: left;
+}
+td {
+    border: 1px solid #c9d6e3;
+    padding: 5px 6px;
+    vertical-align: top;
+}
+.note {
+    background: #fff8e1;
+    border-left: 4px solid #e6a23c;
+    padding: 7px 10px;
+    margin: 8pt 0;
+    page-break-inside: avoid;
+}
+.warn {
+    background: #fdecea;
+    border-left: 4px solid #d9534f;
+    padding: 7px 10px;
+    margin: 8pt 0;
+    page-break-inside: avoid;
+}
+.ok {
+    background: #eaf6ea;
+    border-left: 4px solid #4caf50;
+    padding: 7px 10px;
+    margin: 8pt 0;
+    page-break-inside: avoid;
+}
+.title-page {
+    text-align: center;
+    padding-top: 150px;
+    page-break-after: always;
+}
+.brand {
+    font-size: 11pt;
+    letter-spacing: 4px;
+    color: #5a7fa6;
+    margin-bottom: 24px;
+}
+.doctitle {
+    font-size: 28pt;
+    line-height: 1.35;
+    color: #123a6b;
+    border: none;
+    margin: 0 0 16px 0;
+}
+.subtitle {
+    font-size: 12pt;
+    color: #2f6db3;
+    margin-bottom: 60px;
+}
+.meta p {
+    font-size: 11pt;
+    margin: 5px 0;
+    text-align: center;
+    color: #333;
+}
+.tip {
+    margin: 80px auto 0 auto;
+    width: 78%;
+    font-size: 9pt;
+    color: #555;
+    background: #f5f7fa;
+    border: 1px solid #d5e0ea;
+    padding: 10px;
+    text-align: left;
+    line-height: 1.7;
+}
+.toc {
+    background: #f7f9fb;
+    border: 1px solid #d5e0ea;
+    padding: 10px 18px;
+    margin: 8pt 0 16pt 0;
+    page-break-after: always;
+}
+.toc p { margin: 3px 0; }
+.small { font-size: 9pt; color: #666; }
+.center { text-align: center; }
+.page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<!-- ==================== 封面 ==================== -->
+<div class="title-page">
+    <div class="brand">ZDT 张大头闭环伺服</div>
+    <h1 class="doctitle">ZDT X42S 闭环步进电机<br>C# 上位机库使用手册</h1>
+    <div class="subtitle">Zdt.X42S Library · 串口自由协议（TTL / RS485）</div>
+    <div class="meta">
+        <p>版本：V1.0</p>
+        <p>日期：2026-11-24</p>
+        <p>适用固件：Emm5.0 / X（X42S、Y42）</p>
+    </div>
+    <div class="tip">
+        配套文件：<code>Zdt.X42S.sln</code>、<code>lib\net48|netstandard2.0|net9.0-windows</code>、
+        <code>WinForms使用示例.cs</code>、<code>tests\Zdt.X42S.Tests</code>。<br>
+        本库只实现串口自由协议（0x6B / XOR / CRC-8），不包含 Modbus-RTU、CAN 和 DMX512。
+    </div>
+</div>
+
+<!-- ==================== 目录 ==================== -->
+<div class="toc">
+    <h2 style="margin-top:0">目录</h2>
+    <p>1. 概述与文件结构</p>
+    <p>2. 快速开始（接线、引用、最小示例）</p>
+    <p>3. 核心类说明</p>
+    <p>4. 运动控制（速度、位置、回零、同步）</p>
+    <p>5. 读数与状态</p>
+    <p>6. 参数读写</p>
+    <p>7. Emm5.0 与 X 固件差异</p>
+    <p>8. 事件、线程与应答设置</p>
+    <p>9. 常见问题排查</p>
+    <p>10. 串口协议速查表</p>
+    <p>11. 安全与使用注意事项</p>
+    <p>12. 附录：自测与版本说明</p>
+</div>
+
+<!-- ==================== 1 ==================== -->
+<h1>1. 概述与文件结构</h1>
+
+<h2>1.1 本库是什么</h2>
+<p>
+<code>Zdt.X42S</code> 是一个纯 C# 的串口通讯库，用于在 WinForms / WPF / 控制台程序中控制
+ZDT X42S 第二代闭环步进电机。它把《ZDT_X42S 用户手册 V1.0.4》第 4、5 章的命令封装成了
+普通 C# 方法，界面代码不需要自己拼字节、算校验或解析返回帧。
+</p>
+<p>典型用途：云台俯仰/旋转轴、3D 打印设备、写字机、雕刻机、机械臂、电动夹爪、PLC 配套上位机。</p>
+
+<h2>1.2 协议范围</h2>
+<table>
+<tr><th style="width:26%">项目</th><th>说明</th></tr>
+<tr><td>通讯方式</td><td>串口 TTL / RS232 / RS485；默认 115200、8 数据位、无校验、1 停止位</td></tr>
+<tr><td>协议</td><td>ZDT 串口自由协议：<code>[地址][功能码][数据...][校验]</code></td></tr>
+<tr><td>校验</td><td>固定 0x6B（默认）、XOR、CRC-8；不支持 Modbus-RTU / CAN / DMX512</td></tr>
+<tr><td>固件</td><td>Emm5.0 与 X 两种固件都支持；两者部分命令格式不同</td></tr>
+<tr><td>电机地址</td><td>1-255，0 为广播地址；出厂默认 1</td></tr>
+<tr><td>多机</td><td>RS485 可一条总线接多台；也支持 0xAA 多电机命令和 0xFF 同步启动</td></tr>
+</table>
+
+<h2>1.3 文件结构</h2>
+<table>
+<tr><th style="width:34%">路径</th><th>作用</th></tr>
+<tr><td><code>src\Zdt.X42S\ZdtSerialBus.cs</code></td><td>串口打开/关闭、收发、超时、帧解析、多电机共总线</td></tr>
+<tr><td><code>src\Zdt.X42S\ZdtMotor.cs</code></td><td>单电机高层 API：运动、回零、读数、参数设置</td></tr>
+<tr><td><code>src\Zdt.X42S\ZdtPoller.cs</code></td><td>后台轮询，实时刷新位置/速度/状态，适合 WinForms</td></tr>
+<tr><td><code>src\Zdt.X42S\ZdtProtocol*.cs</code></td><td>组帧、校验、拆帧、单位换算、命令构造函数</td></tr>
+<tr><td><code>src\Zdt.X42S\ZdtModels.cs</code></td><td>状态标志、版本、PID、回零参数、系统状态等数据模型</td></tr>
+<tr><td><code>lib\net48\Zdt.X42S.dll</code></td><td>给传统 .NET Framework 4.8 WinForms 引用（串口为框架自带）</td></tr>
+<tr><td><code>lib\netstandard2.0\Zdt.X42S.dll</code></td><td>给 .NET Core / .NET 5+ 项目引用</td></tr>
+<tr><td><code>lib\net9.0-windows\Zdt.X42S.dll</code></td><td>给 .NET 9 WinForms 引用</td></tr>
+<tr><td><code>WinForms使用示例.cs</code></td><td>可直接加入 WinForms 项目的完整示例窗体</td></tr>
+<tr><td><code>tests\Zdt.X42S.Tests</code></td><td>不接硬件的协议自测（62 项，对照手册示例帧）</td></tr>
+</table>
+
+<h2>1.4 功能覆盖</h2>
+<table>
+<tr><th style="width:24%">类别</th><th>已封装内容</th></tr>
+<tr><td>触发动作</td><td>编码器校准、重启、位置清零、解除堵转/过热/过流保护、恢复出厂</td></tr>
+<tr><td>运动控制</td><td>使能/失能、速度模式（Emm/X）、位置模式（脉冲/角度）、X 力矩模式、直通/梯形位置、快速位置、立即停止、多机同步</td></tr>
+<tr><td>回零</td><td>设置单圈零点、触发回零（6 种模式）、中断回零、读写回零参数</td></tr>
+<tr><td>读取</td><td>版本、相电阻/电感、母线电压/电流、相电流、编码器、输入脉冲、目标位置、实时位置、转速、误差、温度、状态标志、IO、电池电压、系统状态</td></tr>
+<tr><td>参数</td><td>地址、细分、电机类型、固件类型、控制模式、方向、按键锁、电流、PID、位置窗口、保护阈值、心跳、刚度、碰撞返回角、锁定等级、上电自动运行</td></tr>
+<tr><td>高级</td><td>定时返回、多电机命令、原始帧收发、完成事件（0x9F）</td></tr>
+</table>
+
+<!-- ==================== 2 ==================== -->
+<h1>2. 快速开始</h1>
+
+<h2>2.1 接线与驱动器设置</h2>
+<table>
+<tr><th style="width:30%">项目</th><th>推荐值 / 说明</th></tr>
+<tr><td>供电</td><td>常规版 10-29V，高压版 10-48V；建议 3A 以上电源，先接电机再接电源</td></tr>
+<tr><td>串口参数</td><td>115200、8、None、1；可在驱动器 <code>UartBaud</code> 菜单修改</td></tr>
+<tr><td>校验方式</td><td><code>Checksum = 0x6B</code>（出厂默认）；本库也支持 XOR、CRC-8</td></tr>
+<tr><td>电机地址</td><td><code>ID_Addr = 1</code>（出厂默认）；RS485 多机时每台设为不同地址</td></tr>
+<tr><td>控制应答</td><td><code>Response = Receive</code>（默认）；如果改成 None，需要设置 <code>bus.WaitForAck = false</code></td></tr>
+<tr><td>固件识别</td><td>小屏第二行显示 <code>0.00err</code> 且绿灯常亮 = Emm；显示 <code>0.0°</code> 且绿灯 1 秒闪 1 次 = X</td></tr>
+<tr><td>校准</td><td>新板或拆装过电机，先执行一次空载校准 <code>Cal_MFL</code>，否则精度和闭环效果会差</td></tr>
+</table>
+
+<div class="note">
+<b>TTL 与 RS485：</b>TTL 一般是单机点对点，一个串口接一个电机；RS485 可以一条总线挂多台，
+但必须共地、A/B 不接反，长距离或高波特率时建议加 120Ω 终端电阻。USB 转 485 模块建议使用带自动收发切换的型号。
+</div>
+
+<h2>2.2 在 WinForms 项目中引用</h2>
+<p>方式一（推荐）：把 <code>src\Zdt.X42S\Zdt.X42S.csproj</code> 添加到你的解决方案，然后右键你的 WinForms 项目 → 添加 → 项目引用。</p>
+<p>方式二：直接引用 DLL。根据项目框架选择：</p>
+<table>
+<tr><th style="width:40%">你的项目</th><th>引用这个 DLL</th></tr>
+<tr><td>.NET Framework 4.8 WinForms</td><td><code>lib\net48\Zdt.X42S.dll</code>（不需要额外 NuGet 串口包）</td></tr>
+<tr><td>.NET 8 / .NET 9 WinForms</td><td><code>lib\netstandard2.0\Zdt.X42S.dll</code> 或 <code>lib\net9.0-windows\Zdt.X42S.dll</code></td></tr>
+</table>
+<p class="small">.NET Core / .NET 5+ 项目还需要 <code>System.IO.Ports</code> NuGet 包；如果你引用的是项目，包会自动带过来。</p>
+
+<h2>2.3 最小可运行代码</h2>
+<pre>using Zdt.X42S;
+
+// 1. 打开串口（一条总线可以挂多台电机）
+var bus = new ZdtSerialBus();
+bus.Open("COM3", 115200);
+
+// 2. 创建电机对象：地址 1，出厂默认 Emm5.0 固件
+//    如果是 X 固件，改成 ZdtFirmware.X
+var motor = bus.CreateMotor(1, ZdtFirmware.Emm);
+
+// 3. 使能、调速、停止
+motor.Enable();                       // 锁轴
+motor.RunVelocity(500, 2000);         // 500RPM，加速度 2000RPM/s
+System.Threading.Thread.Sleep(3000);  // 演示用，实际界面不要 Sleep
+motor.Stop();                         // 立即停止
+motor.Disable();                      // 松轴
+
+// 4. 关闭
+bus.Close();</pre>
+
+<div class="warn">
+<b>不要用 Sleep 卡住界面：</b>示例里的 Sleep 只是为了演示。WinForms 中请把连续读取交给
+<code>ZdtPoller</code>，按钮里只发短命令；需要等待动作完成时用 <code>PositionReached</code> /
+<code>HomingCompleted</code> 事件。
+</div>
+
+<h2>2.4 WinForms 实时显示位置和速度</h2>
+<pre>ZdtSerialBus _bus;
+ZdtMotor _motor;
+ZdtPoller _poller;
+
+private void Form1_Load(object sender, EventArgs e)
+{
+    _bus = new ZdtSerialBus();
+    _bus.Open("COM3", 115200);
+    _motor = _bus.CreateMotor(1, ZdtFirmware.Emm);
+
+    _poller = new ZdtPoller(_motor, 100);   // 100ms 采一次
+    _poller.Updated += (s, snap) =&gt;
+    {
+        lblPosition.Text = snap.PositionDegrees.ToString("F2") + " °";
+        lblSpeed.Text    = snap.SpeedRpm.ToString("F1") + " RPM";
+        lblState.Text    = snap.MotorStatus.IsEnabled ? "使能" : "失能";
+    };
+    _poller.Start();
+}
+
+private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+{
+    if (_poller != null) { _poller.Stop(); _poller.Dispose(); }
+    if (_bus != null) _bus.Close();
+}</pre>
+<p><code>ZdtPoller</code> 在 UI 线程创建时，会自动把 <code>Updated</code> 事件 Post 回 UI 线程；
+如果你在后台线程创建它，事件就在后台线程触发，需要自己 <code>BeginInvoke</code>。</p>
+
+<h2>2.5 关闭顺序</h2>
+<ol>
+<li>先 <code>poller.Stop()</code>，停止后台串口读取；</li>
+<li>再 <code>motor.Dispose()</code>（可选，主要是取消事件订阅）；</li>
+<li>最后 <code>bus.Close()</code> 关闭串口。</li>
+</ol>
+<p>顺序反了可能出现“后台线程还在读已关闭串口”的异常；库内部已经做了保护，但按这个顺序最干净。</p>
+
+<!-- ==================== 3 ==================== -->
+<h1 class="page-break">3. 核心类说明</h1>
+
+<h2>3.1 ZdtSerialBus（一条串口总线）</h2>
+<table>
+<tr><th style="width:32%">成员</th><th>说明</th></tr>
+<tr><td><code>Open(portName, baudRate)</code></td><td>打开串口并启动接收线程；默认 115200</td></tr>
+<tr><td><code>Close()</code> / <code>Dispose()</code></td><td>停止接收线程并关闭串口</td></tr>
+<tr><td><code>CreateMotor(address, firmware)</code></td><td>创建绑定到该总线的电机对象</td></tr>
+<tr><td><code>ChecksumMode</code></td><td>Fixed6B / Xor / Crc8，必须和驱动器 Checksum 菜单一致</td></tr>
+<tr><td><code>TimeoutMs</code></td><td>等待应答超时，默认 200ms</td></tr>
+<tr><td><code>WaitForAck</code></td><td>控制命令是否等待 0x02 应答；驱动器 Response=None 时设为 false</td></tr>
+<tr><td><code>InterCommandDelayMs</code></td><td>命令间隔，默认 2ms；RS485 转换器较慢时加大</td></tr>
+<tr><td><code>FrameReceived</code></td><td>收到任意一帧时触发（后台线程池线程）</td></tr>
+<tr><td><code>ErrorOccurred</code></td><td>接收线程异常时触发</td></tr>
+<tr><td><code>SendCommandAsync()</code></td><td>异步发送并等待应答，不阻塞界面</td></tr>
+<tr><td><code>SendMultiMotorCommand()</code></td><td>发送 0xAA 多电机命令</td></tr>
+</table>
+
+<h2>3.2 ZdtMotor（单台电机）</h2>
+<table>
+<tr><th style="width:30%">成员分组</th><th>常用方法</th></tr>
+<tr><td>连接属性</td><td><code>Address</code>、<code>Firmware</code>、<code>Microstep</code>、<code>MotorStepAngleDegrees</code>、<code>XPositionUnitDegrees</code></td></tr>
+<tr><td>使能/停止</td><td><code>Enable()</code>、<code>Disable()</code>、<code>Stop()</code></td></tr>
+<tr><td>速度</td><td><code>RunVelocity(rpm, accel)</code>、<code>SetSpeedEmm()</code>、<code>SetSpeedX()</code>、<code>SetSpeedXWithCurrent()</code></td></tr>
+<tr><td>位置</td><td><code>MoveAbsoluteAngle()</code>、<code>MoveRelativeAngle()</code>、<code>MoveToAngle()</code>、<code>MovePositionEmm/X...</code></td></tr>
+<tr><td>回零</td><td><code>Home()</code>、<code>SetHomingZero()</code>、<code>AbortHoming()</code>、<code>SetHomingParameters()</code></td></tr>
+<tr><td>读数</td><td><code>ReadPositionDegrees()</code>、<code>ReadSpeedRpm()</code>、<code>ReadMotorStatus()</code>、<code>ReadSystemState()</code> 等</td></tr>
+<tr><td>参数</td><td><code>SetMicrostep()</code>、<code>SetAddress()</code>、<code>SetClosedLoopCurrent()</code>、<code>SetPidEmm/X()</code> 等</td></tr>
+<tr><td>事件</td><td><code>ActionCompleted</code>、<code>PositionReached</code>、<code>HomingCompleted</code>、<code>FrameReceived</code></td></tr>
+</table>
+
+<h2>3.3 ZdtPoller（后台轮询）</h2>
+<p>每 <code>intervalMs</code> 读取一次“回零状态 + 电机状态 + 实时位置 + 实时转速”，通过
+<code>Updated</code> 事件返回 <code>ZdtMotorSnapshot</code>。建议间隔 50-500ms；不要低于 20ms，
+否则串口会被轮询占满，按钮命令会排队。</p>
+
+<h2>3.4 ZdtProtocol（协议工具箱）</h2>
+<p>如果需要自己发命令或做协议分析，可以使用：</p>
+<ul>
+<li><code>ZdtProtocol.BuildFrame(address, code, checksum, data...)</code> 组帧；</li>
+<li><code>ZdtProtocol.ComputeChecksum / ComputeCrc8</code> 计算校验；</li>
+<li><code>ZdtProtocol.TryParseFrame</code> 从字节流拆帧；</li>
+<li><code>ZdtProtocol.ToHexString / ParseHexString</code> 十六进制日志；</li>
+<li><code>ZdtProtocol.DegreesToPulses</code>、<code>EmmRawToDegrees</code> 等单位换算。</li>
+</ul>
+
+<h2>3.5 数据模型</h2>
+<table>
+<tr><th style="width:34%">类型</th><th>内容</th></tr>
+<tr><td><code>ZdtMotorStatus</code></td><td>使能、到位、堵转、堵转保护、左右限位、掉电标志</td></tr>
+<tr><td><code>ZdtHomingStatus</code></td><td>编码器正常、已校准、正在回零、回零失败、过温、过流</td></tr>
+<tr><td><code>ZdtSystemState</code></td><td>母线电压/电流、相电流、编码器、目标/实时位置、转速、误差、温度、状态</td></tr>
+<tr><td><code>ZdtHomingParameters</code></td><td>回零模式、方向、速度、超时、碰撞检测转速/电流/时间、上电自动回零</td></tr>
+<tr><td><code>ZdtPidEmm</code> / <code>ZdtPidX</code></td><td>两种固件的 PID 参数</td></tr>
+<tr><td><code>ZdtMotorSnapshot</code></td><td>轮询快照：位置、转速、电机状态、回零状态、时间</td></tr>
+</table>
+
+<!-- ==================== 4 ==================== -->
+<h1 class="page-break">4. 运动控制</h1>
+
+<h2>4.1 使能与失能</h2>
+<pre>motor.Enable();    // 锁轴，电机保持力矩
+motor.Disable();   // 松轴，可以用手拧动（注意负载可能掉落）</pre>
+<p>失能后电机不再保持位置；云台俯仰轴失能前请确认机械结构不会因重力下落。</p>
+
+<h2>4.2 速度模式</h2>
+<pre>// 正数 CW，负数 CCW；加速度单位 RPM/s；rpm=0 会自动停车
+motor.RunVelocity(500, 2000);    // 500RPM，2000RPM/s 加速
+motor.RunVelocity(-300, 1000);   // 300RPM 反转，1000RPM/s 加速
+motor.Stop();</pre>
+<table>
+<tr><th style="width:22%">固件</th><th>库内部发送</th><th>单位</th></tr>
+<tr><td>Emm5.0</td><td>0xF6，方向 + 速度 + 加速度档位</td><td>速度 RPM；加速度 0-255 档位（库会从 RPM/s 换算）</td></tr>
+<tr><td>X</td><td>0xF6，方向 + 加速度 + 速度</td><td>速度 0.1RPM；加速度 RPM/s</td></tr>
+</table>
+<p>需要精确控制 Emm 的加速度档位时，用 <code>SetSpeedEmm(dir, rpm, acc, sync)</code>。</p>
+
+<h2>4.3 位置模式</h2>
+<pre>// 绝对角度：相对坐标零点
+motor.MoveAbsoluteAngle(90, 300, 1500);
+
+// 相对角度：相对当前实时位置
+motor.MoveRelativeAngle(-10, 200, 1000);
+
+// 完整参数：角度、速度、加速度、运动方式、是否多机同步、X 固件最大电流
+motor.MoveToAngle(
+    degrees: 45,
+    speedRpm: 300,
+    accelerationRpmPerSecond: 1500,
+    motionMode: ZdtMotionMode.Absolute,
+    synchronized: false,
+    maxCurrentMa: 2000);   // 仅 X 固件有效，0 表示不限流</pre>
+<table>
+<tr><th style="width:24%">项目</th><th>说明</th></tr>
+<tr><td>运动方式</td><td><code>RelativeToLastTarget</code> 相对上一次目标；<code>Absolute</code> 相对零点；<code>RelativeToCurrent</code> 相对当前实时位置</td></tr>
+<tr><td>Emm 固件</td><td>库把角度换算成脉冲数：1.8° 电机、16 细分时 <b>3200 脉冲/圈</b>；0.9° 电机为 6400</td></tr>
+<tr><td>X 固件</td><td>位置单位为 0.1°；默认 90° 发送 900。如果驱动器开启 S_PosTDP（再缩小 10 倍），设置 <code>motor.XPositionUnitDegrees = 0.01</code></td></tr>
+<tr><td>方向</td><td>正角度 CW，负角度 CCW；方向是相对驱动器“电机运动正方向”设置</td></tr>
+<tr><td>命令打断</td><td>X42S/Y42 支持位置命令打断：运动过程中再发新位置命令，会平滑过渡到新目标</td></tr>
+</table>
+<div class="note">
+位置模式到位后，如果驱动器 <code>Response</code> 设为 Reached/Both/Other，会主动返回
+<code>地址 + FD + 9F + 6B</code>，库会触发 <code>PositionReached</code> 事件。
+默认 Receive 模式只返回 0x02，不会主动返回到位帧。
+</div>
+
+<h2>4.4 回零</h2>
+<table>
+<tr><th style="width:24%">模式</th><th>枚举</th><th>说明</th></tr>
+<tr><td>单圈就近</td><td><code>Nearest</code> (0)</td><td>转到最近的原点，默认模式</td></tr>
+<tr><td>单圈方向</td><td><code>Direction</code> (1)</td><td>按设定方向找原点</td></tr>
+<tr><td>多圈无限位碰撞</td><td><code>SensorlessCollision</code> (2)</td><td>撞到机械限位后，以堵转位置为零点</td></tr>
+<tr><td>多圈限位开关</td><td><code>EndStop</code> (3)</td><td>接限位开关回零</td></tr>
+<tr><td>绝对坐标零点</td><td><code>AbsoluteZero</code> (4)</td><td>回到坐标零点</td></tr>
+<tr><td>上次掉电位置</td><td><code>PowerLossPosition</code> (5)</td><td>Y42 / 带掉电记录电池时有效</td></tr>
+</table>
+<pre>// 先把当前位置设为单圈零点（会写入驱动器）
+motor.SetHomingZero(store: true);
+
+// 触发碰撞回零；回零完成后触发 HomingCompleted 事件
+motor.Home(ZdtHomingMode.SensorlessCollision);
+
+// 回零卡住/需要取消
+motor.AbortHoming();</pre>
+<p>碰撞回零前，先在驱动器里设置好回零速度、碰撞检测电流和时间；参数可用
+<code>SetHomingParameters()</code> 修改。回零完成帧为 <code>地址 + 9A + 9F + 6B</code>。</p>
+
+<h2>4.5 停止、多机同步与多电机命令</h2>
+<pre>// 立即停止本机
+motor.Stop();
+
+// 两个轴分别缓存一条位置命令，然后用广播地址同时启动
+m1.MoveAbsoluteAngle(30, 200, 1000, ZdtMotionMode.Absolute, synchronized: true);
+m2.MoveAbsoluteAngle(60, 200, 1000, ZdtMotionMode.Absolute, synchronized: true);
+m1.TriggerSyncMotion();   // 内部用 0x00 FF 66 6B 广播
+
+// 一条串口帧同时发给多个地址（0xAA 多电机命令）
+byte[] cmd1 = ZdtProtocol.SpeedEmm(1, ZdtChecksumMode.Fixed6B, ZdtDirection.Cw, 500, 50, false);
+byte[] cmd2 = ZdtProtocol.Read(2, ZdtChecksumMode.Fixed6B, 0x36);
+bus.SendMultiMotorCommand(cmd1, cmd2);</pre>
+<div class="note">
+0xAA 多电机命令只有地址 1 的电机会回复确认，所以库默认“只发不等待”。
+如果总线上没有地址 1，等待应答会超时。
+</div>
+
+<h2>4.6 定时返回（可选）</h2>
+<pre>// 让电机每 20ms 主动返回一次实时位置（0x36）
+motor.SetTimedReport(0x36, 20);
+
+// 停止返回
+motor.StopTimedReport(0x36);</pre>
+<p>定时返回的数据会通过 <code>ZdtSerialBus.FrameReceived</code> / <code>ZdtMotor.FrameReceived</code>
+收到，格式和对应读取命令一致。定时返回很密集时，不建议再同时高频轮询。</p>
+
+<!-- ==================== 5 ==================== -->
+<h1 class="page-break">5. 读数与状态</h1>
+
+<h2>5.1 常用读取方法</h2>
+<table>
+<tr><th style="width:38%">方法</th><th>功能码</th><th>单位 / 说明</th></tr>
+<tr><td><code>ReadPositionDegrees()</code></td><td>0x36</td><td>实时位置，°</td></tr>
+<tr><td><code>ReadTargetPositionDegrees()</code></td><td>0x33</td><td>目标位置，°</td></tr>
+<tr><td><code>ReadRealtimeTargetPositionDegrees()</code></td><td>0x34</td><td>实时设定的目标位置，°</td></tr>
+<tr><td><code>ReadSpeedRpm()</code></td><td>0x35</td><td>实时转速，RPM（X 固件内部 0.1RPM 已换算）</td></tr>
+<tr><td><code>ReadPositionErrorDegrees()</code></td><td>0x37</td><td>位置误差，°</td></tr>
+<tr><td><code>ReadMotorStatus()</code></td><td>0x3A</td><td>电机状态位</td></tr>
+<tr><td><code>ReadHomingStatus()</code></td><td>0x3B</td><td>回零状态位</td></tr>
+<tr><td><code>ReadBothStatus(out, out)</code></td><td>0x3C</td><td>一次读回零 + 电机状态</td></tr>
+<tr><td><code>ReadSystemState()</code></td><td>0x43 0x7A</td><td>一次读取 9/12 个参数（自动按固件解析）</td></tr>
+<tr><td><code>ReadBusVoltageMv()</code></td><td>0x24</td><td>母线电压，mV</td></tr>
+<tr><td><code>ReadBusCurrentMa()</code></td><td>0x26</td><td>母线电流，mA（X42S/Y42）</td></tr>
+<tr><td><code>ReadPhaseCurrentMa()</code></td><td>0x27</td><td>相电流，mA</td></tr>
+<tr><td><code>ReadTemperatureC()</code></td><td>0x39</td><td>驱动温度，℃</td></tr>
+<tr><td><code>ReadEncoderValue()</code></td><td>0x31</td><td>线性化编码器值 0-65535</td></tr>
+<tr><td><code>ReadInputPulses()</code></td><td>0x32</td><td>输入脉冲数（带符号）</td></tr>
+<tr><td><code>ReadIoStatus()</code></td><td>0x3D</td><td>En/Stp/Dir 引脚电平和方向模式</td></tr>
+<tr><td><code>ReadVersion()</code></td><td>0x1F</td><td>固件/硬件版本</td></tr>
+<tr><td><code>ReadPhaseParameters()</code></td><td>0x20</td><td>相电阻 mΩ / 相电感 uH</td></tr>
+</table>
+
+<h2>5.2 电机状态标志（0x3A）</h2>
+<table>
+<tr><th style="width:16%">位</th><th style="width:26%">属性</th><th>含义</th></tr>
+<tr><td>bit0</td><td><code>IsEnabled</code></td><td>1=已使能（锁轴）</td></tr>
+<tr><td>bit1</td><td><code>PositionReached</code></td><td>1=已到达目标位置</td></tr>
+<tr><td>bit2</td><td><code>StallDetected</code></td><td>1=检测到堵转</td></tr>
+<tr><td>bit3</td><td><code>StallProtection</code></td><td>1=已触发堵转保护</td></tr>
+<tr><td>bit4</td><td><code>LeftLimitActive</code></td><td>1=左限位输入高电平</td></tr>
+<tr><td>bit5</td><td><code>RightLimitActive</code></td><td>1=右限位输入高电平</td></tr>
+<tr><td>bit7</td><td><code>PowerLost</code></td><td>1=发生过掉电（上电默认 1）</td></tr>
+</table>
+
+<h2>5.3 回零状态标志（0x3B）</h2>
+<table>
+<tr><th style="width:16%">位</th><th style="width:26%">属性</th><th>含义</th></tr>
+<tr><td>bit0</td><td><code>EncoderReady</code></td><td>1=编码器正常</td></tr>
+<tr><td>bit1</td><td><code>CalibrationReady</code></td><td>1=已校准</td></tr>
+<tr><td>bit2</td><td><code>HomingInProgress</code></td><td>1=正在回零</td></tr>
+<tr><td>bit3</td><td><code>HomingFailed</code></td><td>1=回零失败</td></tr>
+<tr><td>bit4</td><td><code>OverTemperature</code></td><td>1=过热保护</td></tr>
+<tr><td>bit5</td><td><code>OverCurrent</code></td><td>1=过流保护</td></tr>
+</table>
+
+<h2>5.4 角度、速度、误差的单位</h2>
+<table>
+<tr><th style="width:26%">固件</th><th>位置读取</th><th>速度读取</th><th>位置误差</th></tr>
+<tr><td>Emm5.0</td><td>原始值 × 360 / 65536</td><td>RPM</td><td>原始值 × 360 / 65536</td></tr>
+<tr><td>X</td><td>原始值 × 0.1°</td><td>原始值 × 0.1 RPM</td><td>原始值 × 0.01°</td></tr>
+</table>
+<p class="small">手册 5.8.1 的 X 固件示例把 <code>0x00010000</code> 标成 360°，该示例数值照抄了 Emm 示例；
+字段定义明确写的是 0.1°，本库按 0.1° 解析。</p>
+
+<h2>5.5 一次读取全部状态</h2>
+<pre>ZdtSystemState state = motor.ReadSystemState();
+
+Console.WriteLine("母线电压：" + state.BusVoltageMv + " mV");
+Console.WriteLine("相电流：" + state.PhaseCurrentMa + " mA");
+Console.WriteLine("位置：" + state.PositionDegrees.ToString("F2") + " °");
+Console.WriteLine("转速：" + state.SpeedRpm.ToString("F1") + " RPM");
+Console.WriteLine("温度：" + state.TemperatureC + " ℃");
+Console.WriteLine("已使能：" + state.MotorStatus.IsEnabled);</pre>
+
+<!-- ==================== 6 ==================== -->
+<h1 class="page-break">6. 参数读写</h1>
+
+<h2>6.1 常用参数方法</h2>
+<table>
+<tr><th style="width:34%">方法</th><th>命令码</th><th>说明</th></tr>
+<tr><td><code>SetAddress(newAddress, store)</code></td><td>0xAE 0x4B</td><td>修改地址；成功后本对象 Address 自动更新</td></tr>
+<tr><td><code>SetMicrostep(1-256, store)</code></td><td>0x84 0x8A</td><td>细分；修改后本对象 Microstep 自动更新</td></tr>
+<tr><td><code>SetMotorType(is09, store)</code></td><td>0xD7 0x35</td><td>0.9° / 1.8°；修改后需重新校准</td></tr>
+<tr><td><code>SetFirmwareType(type, store)</code></td><td>0xD5 0x69</td><td>X / Emm / Emm 狂暴；修改后需同步 Firmware 属性</td></tr>
+<tr><td><code>SetControlMode(mode, store)</code></td><td>0x46 0xA6</td><td>开环 / 闭环；建议停机修改</td></tr>
+<tr><td><code>SetMotorDirection(dir, store)</code></td><td>0xD4 0x60</td><td>修改运动正方向</td></tr>
+<tr><td><code>SetOpenLoopCurrent(mA, store)</code></td><td>0x44 0x33</td><td>开环工作电流 0-5000mA</td></tr>
+<tr><td><code>SetClosedLoopCurrent(mA, store)</code></td><td>0x45 0x66</td><td>闭环最大电流 0-5000mA</td></tr>
+<tr><td><code>SetPidEmm(kp, ki, kd, store)</code></td><td>0x4A 0xC3</td><td>Emm PID</td></tr>
+<tr><td><code>SetPidX(pTkp, pBkp, vkp, vki, store)</code></td><td>0x4A 0xC3</td><td>X PID</td></tr>
+<tr><td><code>SetHomingParameters(params, store)</code></td><td>0x4C 0xAE</td><td>回零模式/方向/速度/超时/碰撞检测</td></tr>
+<tr><td><code>SetPositionWindowDegrees(deg, store)</code></td><td>0xD1 0x07</td><td>到位判定窗口，默认 0.8°</td></tr>
+<tr><td><code>SetProtectionThresholds(...)</code></td><td>0xD3 0x56</td><td>过热/过流阈值和检测时间</td></tr>
+<tr><td><code>SetHeartbeat(ms, store)</code></td><td>0x68 0x38</td><td>心跳保护，0=关闭</td></tr>
+<tr><td><code>SetStiffness(value, store)</code></td><td>0x4B 0x57</td><td>Emm 积分限幅 / X 刚性系数</td></tr>
+<tr><td><code>SetCollisionReturnAngleDegrees(...)</code></td><td>0x5C 0xAC</td><td>碰撞回零后返回角度</td></tr>
+<tr><td><code>SetLockLevel(0-3, store)</code></td><td>0xD6 0x4B</td><td>参数锁定等级</td></tr>
+<tr><td><code>SetPowerOnSpeedEmm/X(...)</code></td><td>0xF7 0x1C</td><td>存储上电自动运行速度</td></tr>
+</table>
+
+<h2>6.2 参数示例</h2>
+<pre>// 闭环最大电流 3000mA，并写入驱动器
+motor.SetClosedLoopCurrent(3000, store: true);
+
+// 回零参数：单圈就近、CW、30RPM、超时 10s、碰撞检测 300RPM/800mA/60ms
+motor.SetHomingParameters(new ZdtHomingParameters
+{
+    Mode = ZdtHomingMode.Nearest,
+    Direction = ZdtDirection.Cw,
+    SpeedRpm = 30,
+    TimeoutMs = 10000,
+    CollisionSpeedRpm = 300,
+    CollisionCurrentMa = 800,
+    CollisionTimeMs = 60,
+    PowerOnAutoHome = false
+}, store: true);
+
+// 读取当前回零参数
+ZdtHomingParameters hp = motor.ReadHomingParameters();</pre>
+
+<h2>6.3 关于 store（是否存储）</h2>
+<p><code>store: true</code> 会把参数写入驱动器掉电存储区。参数页的“保存”按钮用 true；
+调试时频繁试参数建议用 false（只改 RAM），调好后再保存 true，减少 Flash 擦写。</p>
+
+<!-- ==================== 7 ==================== -->
+<h1 class="page-break">7. Emm5.0 与 X 固件差异</h1>
+
+<h2>7.1 如何识别</h2>
+<table>
+<tr><th style="width:34%">现象</th><th>固件</th></tr>
+<tr><td>小屏第二行显示角度误差 <code>0.00err</code>，绿灯常亮</td><td>Emm5.0（出厂默认）</td></tr>
+<tr><td>小屏第二行显示实时角度 <code>0.0°</code>，绿灯 1 秒闪 1 次</td><td>X 固件</td></tr>
+</table>
+<p>创建电机对象时必须选对：<code>bus.CreateMotor(1, ZdtFirmware.Emm)</code> 或
+<code>ZdtFirmware.X</code>。选错时速度/位置命令格式不同，驱动器通常返回 <code>E2</code>。</p>
+
+<h2>7.2 主要差异</h2>
+<table>
+<tr><th style="width:22%">项目</th><th>Emm5.0</th><th>X</th></tr>
+<tr><td>速度模式</td><td>速度 RPM，加速度 0-255 档位</td><td>速度 0.1RPM，加速度 RPM/s</td></tr>
+<tr><td>位置模式</td><td>脉冲数，运动模式 0/1/2</td><td>0.1°；直通 0xFB / 梯形 0xFD</td></tr>
+<tr><td>力矩模式</td><td>无</td><td>有（0xF5 / 0xC5）</td></tr>
+<tr><td>位置限流</td><td>无</td><td>有（0xCB / 0xCD）</td></tr>
+<tr><td>角度读取</td><td>0-65535 一圈</td><td>0.1°</td></tr>
+<tr><td>速度读取</td><td>RPM</td><td>0.1RPM</td></tr>
+<tr><td>误差读取</td><td>0-65535 一圈</td><td>0.01°</td></tr>
+<tr><td>快速位置</td><td>0xF1 + 0xFC（脉冲）</td><td>0xF1 + 0xFC（0.1°）</td></tr>
+</table>
+
+<h2>7.3 切换固件后要做什么</h2>
+<ol>
+<li>驱动器菜单 <code>FWType</code> 切换固件；</li>
+<li>重新上电；</li>
+<li>空载重新校准编码器；</li>
+<li>上位机创建电机对象时改 <code>ZdtFirmware</code>；</li>
+<li>如果改了细分或电机类型，同步修改 <code>motor.Microstep</code> / <code>MotorStepAngleDegrees</code>。</li>
+</ol>
+
+<!-- ==================== 8 ==================== -->
+<h1>8. 事件、线程与应答设置</h1>
+
+<h2>8.1 事件在哪个线程触发</h2>
+<table>
+<tr><th style="width:36%">事件</th><th>触发线程</th></tr>
+<tr><td><code>ZdtSerialBus.FrameReceived</code></td><td>线程池</td></tr>
+<tr><td><code>ZdtMotor.FrameReceived</code></td><td>线程池</td></tr>
+<tr><td><code>ZdtMotor.ActionCompleted</code></td><td>线程池</td></tr>
+<tr><td><code>ZdtMotor.PositionReached</code></td><td>线程池</td></tr>
+<tr><td><code>ZdtMotor.HomingCompleted</code></td><td>线程池</td></tr>
+<tr><td><code>ZdtPoller.Updated</code></td><td>创建 Poller 时有 SynchronizationContext 就 Post 回该线程，否则线程池</td></tr>
+</table>
+<p>WinForms 事件处理里更新控件，统一用：</p>
+<pre>private void Ui(Action action)
+{
+    if (IsDisposed || Disposing) return;
+    if (InvokeRequired) BeginInvoke(action);
+    else action();
+}</pre>
+
+<h2>8.2 Response 菜单与 WaitForAck</h2>
+<table>
+<tr><th style="width:22%">Response</th><th>行为</th><th>库设置</th></tr>
+<tr><td>Receive（默认）</td><td>控制命令返回 0x02；读命令正常返回数据</td><td>默认即可</td></tr>
+<tr><td>None</td><td>控制命令不返回任何帧</td><td><code>bus.WaitForAck = false;</code></td></tr>
+<tr><td>Reached</td><td>只返回到位/回零完成 0x9F</td><td>位置命令会等到 0x9F 才返回 <code>Completed</code></td></tr>
+<tr><td>Both</td><td>0x02 + 0x9F</td><td>默认即可，9F 通过事件收到</td></tr>
+<tr><td>Other</td><td>位置命令返回到位，其他控制命令返回 0x02</td><td>默认即可</td></tr>
+</table>
+<div class="note">
+如果按钮点下去一直提示“等待电机应答超时”，先检查驱动器 <code>Response</code>。
+设为 None 时库必须关闭 WaitForAck，否则会等满 200ms 后抛超时。
+</div>
+
+<!-- ==================== 9 ==================== -->
+<h1 class="page-break">9. 常见问题排查</h1>
+<table>
+<tr><th style="width:26%">现象</th><th>可能原因与处理</th></tr>
+<tr><td>打开串口失败</td><td>串口被其他软件占用（JCom、上位机、Arduino 串口监视器）；USB 转串口驱动未装；COM 号选错。关闭其他软件、重新插拔、在设备管理器确认 COM 号。</td></tr>
+<tr><td>所有命令都超时</td><td>波特率不一致；电机地址不对；A/B 接反；TX/RX 没交叉；没有共地；驱动器 Checksum 不是 0x6B 而库里没改。先只读 <code>ReadVersion()</code> 验证。</td></tr>
+<tr><td>返回 E2</td><td>参数超范围；固件类型选错（Emm 命令发给了 X 固件）；开环模式触发校准；触发了低压/堵转/过流/过温保护。用 <code>ReadHomingStatus()</code> 看保护位。</td></tr>
+<tr><td>返回 EE</td><td>命令格式/长度错误；自定义 <code>SendRaw</code> 时数据长度不对；固件类型不匹配。先用库封装好的方法验证。</td></tr>
+<tr><td>使能后电机不转</td><td>速度太小；加速度为 0 但速度没给；处于开环且电流太小；机械卡死；驱动未校准。先 <code>ReadMotorStatus()</code> 看是否使能、是否堵转。</td></tr>
+<tr><td>运动方向反了</td><td>改 <code>SetMotorDirection()</code>，或调换电机 A+/A-、B+/B- 其中一组线序后重新校准。</td></tr>
+<tr><td>位置不准/丢步</td><td>没有空载校准；细分/电机类型设置不对；负载超力矩；加速度太大；闭环最大电流太小。先低速空载测试。</td></tr>
+<tr><td>多机通讯冲突</td><td>地址重复；RS485 没有共地/终端电阻；只有地址 1 回复 0xAA 多电机命令；广播命令不要用于读参数。</td></tr>
+<tr><td>回零失败</td><td>回零模式与接线不匹配；碰撞检测电流/时间设置不合理；限位开关电平不对；超时时间太短。用 <code>ReadHomingStatus()</code> 看 Org_CF/Org_SF。</td></tr>
+<tr><td>界面卡顿</td><td>在 UI 线程里循环读串口。改用 <code>ZdtPoller</code>；按钮命令本身很短，可以同步调用。</td></tr>
+<tr><td>数据偶尔错帧</td><td>USB 转 485 质量差/线太长/波特率太高；增加 <code>InterCommandDelayMs</code>；降低波特率；加终端电阻；检查共地。</td></tr>
+</table>
+
+<!-- ==================== 10 ==================== -->
+<h1>10. 串口协议速查表</h1>
+<p>以下示例都使用：地址 1、固定校验 0x6B、默认 115200。发送格式为
+<code>[地址][功能码][数据...][0x6B]</code>。</p>
+
+<table>
+<tr><th style="width:20%">功能</th><th>发送示例</th><th>正常应答</th></tr>
+<tr><td>触发校准</td><td><code>01 06 45 6B</code></td><td><code>01 06 02 6B</code></td></tr>
+<tr><td>使能</td><td><code>01 F3 AB 01 00 6B</code></td><td><code>01 F3 02 6B</code></td></tr>
+<tr><td>Emm 速度 1500RPM</td><td><code>01 F6 01 05 DC 0A 00 6B</code></td><td><code>01 F6 02 6B</code></td></tr>
+<tr><td>X 速度 2000RPM</td><td><code>01 F6 01 03 E8 4E 20 00 6B</code></td><td><code>01 F6 02 6B</code></td></tr>
+<tr><td>Emm 相对 32000 脉冲</td><td><code>01 FD 01 05 DC 00 00 00 7D 00 00 00 6B</code></td><td><code>01 FD 02 6B</code></td></tr>
+<tr><td>X 绝对 360°</td><td><code>01 FD 00 07 D0 07 D0 27 10 00 00 0E 10 01 00 6B</code></td><td><code>01 FD 02 6B</code></td></tr>
+<tr><td>立即停止</td><td><code>01 FE 98 00 6B</code></td><td><code>01 FE 02 6B</code></td></tr>
+<tr><td>触发回零（碰撞）</td><td><code>01 9A 02 00 6B</code></td><td><code>01 9A 02 6B</code> / <code>01 9A 12 6B</code> / <code>01 9A 9F 6B</code></td></tr>
+<tr><td>设置单圈零点</td><td><code>01 93 88 01 6B</code></td><td><code>01 93 02 6B</code></td></tr>
+<tr><td>读实时位置</td><td><code>01 36 6B</code></td><td><code>01 36 00 00 01 00 00 6B</code>（+360°）</td></tr>
+<tr><td>读电机状态</td><td><code>01 3A 6B</code></td><td><code>01 3A 83 6B</code></td></tr>
+<tr><td>定时返回位置 1ms</td><td><code>01 11 18 36 00 01 6B</code></td><td><code>01 11 6B</code> / <code>01 11 02 6B</code></td></tr>
+<tr><td>广播多机同步</td><td><code>00 FF 66 6B</code></td><td><code>01 FF 02 6B</code></td></tr>
+<tr><td>多电机命令</td><td><code>00 AA 00 22 ... 6B</code></td><td>地址 1 回复确认</td></tr>
+</table>
+
+<h2>10.1 应答状态字节</h2>
+<table>
+<tr><th style="width:18%">字节</th><th>含义</th></tr>
+<tr><td><code>02</code></td><td>接收命令正确</td></tr>
+<tr><td><code>12</code></td><td>触发回零时已经在零点，电机不动</td></tr>
+<tr><td><code>E2</code></td><td>参数错误：超范围、低压、堵转、过流/过温</td></tr>
+<tr><td><code>EE</code></td><td>命令格式错误</td></tr>
+<tr><td><code>9F</code></td><td>动作完成（到位 / 回零完成 / 夹爪夹紧）</td></tr>
+</table>
+
+<h2>10.2 校验方式</h2>
+<table>
+<tr><th style="width:22%">方式</th><th>计算</th></tr>
+<tr><td>0x6B（默认）</td><td>最后一字节固定 0x6B，不参与计算</td></tr>
+<tr><td>XOR</td><td>地址、功能码、数据所有字节依次异或</td></tr>
+<tr><td>CRC-8</td><td>按手册附录 7.1 的 256 字节查找表计算</td></tr>
+</table>
+
+<!-- ==================== 11 ==================== -->
+<h1 class="page-break">11. 安全与使用注意事项</h1>
+<div class="warn">
+<b>硬件安全：</b>
+<ul>
+<li>接线、拔插电机线/通讯线前先断电；带电拔插可能损坏驱动板。</li>
+<li>电源建议 12/24V 3A 以上，电压不要超过驱动器版本上限（常规 29V / 高压 48V）。</li>
+<li>电机相电流、闭环最大电流不要盲目拉满；堵转和长时间大电流会严重发热。</li>
+<li>云台俯仰轴失能前确认机械结构不会因重力下坠；调试时先空载、低速、低电流。</li>
+<li>RS485 长距离要共地、A/B 双绞、必要时加 120Ω 终端电阻。</li>
+</ul>
+</div>
+
+<h2>11.1 软件注意事项</h2>
+<ul>
+<li>不要在 WinForms UI 线程里循环读串口；用 <code>ZdtPoller</code>。</li>
+<li>不要频繁写 Flash；调试参数用 <code>store: false</code>，确定后再保存。</li>
+<li>修改地址、固件类型、控制模式后，及时同步 <code>motor.Address</code> / <code>Firmware</code>，并尽量停机操作。</li>
+<li>位置模式和回零指令执行期间，避免同时大量读参数，以免命令排队导致动作延迟。</li>
+<li>上位机应有“立即停止”按钮，并保证串口异常时能关闭输出。</li>
+<li>第一次接实物：先只读版本/状态/位置，确认通信正常，再做使能、低速、小角度运动。</li>
+</ul>
+
+<h2>11.2 本库的验证边界</h2>
+<div class="note">
+本库的协议组帧、拆帧、CRC-8 表、手册示例帧已通过 62 项离线自测；
+但<b>尚未在真实电机上验证</b>串口打开、驱动器应答时序和实际运动。
+第一次使用请按“读版本 → 读状态 → 使能 → 低速小角度 → 回零”的顺序逐级验证，
+并先在空载、低压、小电流条件下测试。
+</div>
+
+<!-- ==================== 12 ==================== -->
+<h1>12. 附录：自测与版本说明</h1>
+
+<h2>12.1 离线自测</h2>
+<pre>cd Zdt.X42S
+dotnet run --project tests\Zdt.X42S.Tests -c Release</pre>
+<p>自测内容：手册示例帧逐字节比对、接收帧拆分、XOR/CRC-8、位置/速度/状态/系统状态解析、
+E2 异常、0x12 已在零点、0x9F 完成事件等。最近一次结果：<b>62 项全部通过</b>。</p>
+
+<h2>12.2 版本</h2>
+<table>
+<tr><th style="width:18%">版本</th><th style="width:22%">日期</th><th>说明</th></tr>
+<tr><td>V1.0</td><td>2026-11-24</td><td>首个版本：Emm/X 串口自由协议、WinForms 示例、62 项离线自测</td></tr>
+</table>
+
+<h2>12.3 相关文档</h2>
+<ul>
+<li>《ZDT_X42S 第二代闭环步进电机用户手册 V1.0.4》——命令、参数、接线、回零说明</li>
+<li>《ZDT 闭环步进电机 MODBUS 协议使用说明 V1.0.1》——本库未实现 Modbus 部分，仅供查阅</li>
+<li>《ZDT X42S 固件更新使用说明》——固件升级与校准</li>
+</ul>
+
+<p class="small center" style="margin-top:30px">— 手册结束 —</p>
+
+</body>
+</html>
