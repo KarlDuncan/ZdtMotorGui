@@ -1,0 +1,26 @@
+ZdtMotorGui v1.0.0 Windows 运行说明
+
+一、系统要求
+- Windows 10 / 11（自带 .NET Framework 4.8）
+- Windows 7 SP1 / 8.1：如提示缺少 .NET Framework，请先安装 4.8 Runtime
+- USB 转 485 / TTL 驱动（CH340、CP210x、FTDI 等按你的模块安装）
+
+二、运行
+1. 解压到桌面/文档等有写权限的目录（程序会在同目录生成 config.ini，不要放 C:\Program Files）
+2. 双击 ZdtMotorGui.exe
+3. 程序未签名，SmartScreen 提示时点“更多信息 → 仍要运行”
+
+三、连接
+1. 选择串口（如 COM19）、波特率 115200、电机地址（如 2）、校验字节 0x6B
+2. 点“打开串口”
+3. 系统状态 500ms 实时刷新；回零、运动、驱动参数、PID 按需操作
+
+四、安全
+- 先空载、低速、小电流测试
+- 接线/拔插电机线、通讯线前断电
+- RS485 注意 A/B、共地，长距离/高波特率必要时加 120Ω 终端电阻
+
+五、其他系统
+本程序是 Windows WinForms + .NET Framework 4.8，Linux/macOS 不能直接运行；
+请使用 Windows 虚拟机（USB 直通）或按《ZDT X42S 使用手册》自行实现串口命令。
+串口参数：115200、8 数据位、无校验、1 停止位，校验字节 0x6B。

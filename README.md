@@ -6,6 +6,34 @@
 ![.NET Framework](https://img.shields.io/badge/.NET%20Framework-4.8-512BD4)
 ![Serial](https://img.shields.io/badge/Serial-115200%208N1-2f6db3)
 
+## 下载运行（Windows）
+
+不想装 Visual Studio 的话，直接下载发布包：
+
+- [ZdtMotorGui v1.0.0 Windows 版（zip）](dist/ZdtMotorGui-v1.0.0-win.zip)
+- [包内使用说明](dist/使用说明.txt)
+
+1. 解压到桌面/文档等有写权限的目录（程序会在同目录生成 `config.ini`，不要放 `C:\Program Files`）；
+2. 双击 `ZdtMotorGui.exe`；
+3. Windows 10/11 自带 .NET Framework 4.8；Windows 7 SP1/8.1 如提示缺失，安装 [.NET Framework 4.8 Runtime](https://dotnet.microsoft.com/download/dotnet-framework/net48)；
+4. 选择串口、波特率 115200、电机地址、校验字节 `0x6B`，点“打开串口”。
+
+> 程序未签名，Windows SmartScreen 可能提示“未知发布者”；点“更多信息 → 仍要运行”。
+
+## 其他系统
+
+本程序是 **Windows WinForms + .NET Framework 4.8**，不是跨平台 GUI。
+
+| 系统 | 能否直接运行 | 方式 |
+|---|---|---|
+| Windows 10 / 11 x64 | 可以 | 下载 zip，解压后双击 exe；.NET Framework 4.8 已内置 |
+| Windows 7 SP1 / 8.1 | 可以（需运行时） | 先安装 .NET Framework 4.8 Runtime，再运行 |
+| Windows 11 ARM64 | 可以（x64 模拟） | 需安装 USB-485 驱动；未实测 |
+| Linux / macOS | 不可以 | 用 Windows 虚拟机（USB 直通），或按手册自行实现串口命令 |
+| Wine / Mono | 不推荐 | WinForms/串口支持不完整，未验证 |
+
+其他系统自己实现时，串口参数是 **115200、8N1、校验字节 0x6B**，命令见 [手册](docs/Zdt.X42S使用手册.pdf)。如果需要跨平台命令行版（.NET 8），可以后续加。
+
 ## 界面
 
 ![调试工具界面](docs/images/ui.png)
@@ -27,7 +55,7 @@
 - **双轴主界面**：`MainForm` 提供旋转轴/推动轴两个面板，支持点动、步进、软限位、回零。当前 `Program.cs` 入口是单轴调试工具；需要双轴界面时把 `Application.Run(new ZdtToolForm())` 改为 `new MainForm()`。
 - **实时刷新保护**：串口未开提示“请先打开串口”；连续 3 次无应答自动暂停并提示检查地址/串口。
 
-## 快速开始
+## 从源码构建（开发者）
 
 环境：Visual Studio 2022 + .NET Framework 4.8。
 
@@ -65,6 +93,9 @@ docs/
   images/
     ui.png
     system-status.png
+dist/
+  ZdtMotorGui-v1.0.0-win.zip
+  使用说明.txt
 ```
 
 ## 注意事项
