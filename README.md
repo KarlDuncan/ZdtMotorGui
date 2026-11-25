@@ -10,7 +10,8 @@
 
 不想装 Visual Studio 的话，直接下载发布包：
 
-- [ZdtMotorGui v1.0.1 Windows 版（zip）](dist/ZdtMotorGui-v1.0.1-win.zip)
+- [ZdtMotorGui v1.0.1 Windows 版（GitHub Release 下载）](https://github.com/KarlDuncan/ZdtMotorGui/releases/download/v1.0.1/ZdtMotorGui-v1.0.1-win.zip)
+- [仓库内镜像（dist zip）](dist/ZdtMotorGui-v1.0.1-win.zip)
 - [包内使用说明](dist/使用说明.txt)
 - [GitHub Releases 页](https://github.com/KarlDuncan/ZdtMotorGui/releases)
 
