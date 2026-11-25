@@ -10,8 +10,9 @@
 
 不想装 Visual Studio 的话，直接下载发布包：
 
-- [ZdtMotorGui v1.0.0 Windows 版（zip）](dist/ZdtMotorGui-v1.0.0-win.zip)
+- [ZdtMotorGui v1.0.1 Windows 版（zip）](dist/ZdtMotorGui-v1.0.1-win.zip)
 - [包内使用说明](dist/使用说明.txt)
+- [GitHub Releases 页](https://github.com/KarlDuncan/ZdtMotorGui/releases)
 
 1. 解压到桌面/文档等有写权限的目录（程序会在同目录生成 `config.ini`，不要放 `C:\Program Files`）；
 2. 双击 `ZdtMotorGui.exe`；
@@ -94,7 +95,7 @@ docs/
     ui.png
     system-status.png
 dist/
-  ZdtMotorGui-v1.0.0-win.zip
+  ZdtMotorGui-v1.0.1-win.zip
   使用说明.txt
 ```
 

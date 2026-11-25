@@ -9,6 +9,7 @@
     <AssemblyName>ZdtMotorGui</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>

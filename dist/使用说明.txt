@@ -1,4 +1,4 @@
-ZdtMotorGui v1.0.0 Windows 运行说明
+ZdtMotorGui v1.0.1 Windows 运行说明
 
 一、系统要求
 - Windows 10 / 11（自带 .NET Framework 4.8）
